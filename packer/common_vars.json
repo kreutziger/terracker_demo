@@ -1,0 +1,8 @@
+{
+    "common_ami": "ami-9bf712f4",
+    "ssh_user": "centos",
+    "instance_type": "t2.small",
+    "dev_vpc_id": "vpc-fd36e695",
+    "dev_subnet_id": "subnet-bc1687d4",
+    "aws_region": "eu-central-1"
+}

@@ -1,0 +1,36 @@
+{
+  "variables": {
+    "access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `access_key`}}",
+    "secret_key": "{{user `secret_key`}}",
+    "region": "{{user `aws_region`}}",
+    "source_ami": "{{user `common_ami`}}",
+    "instance_type": "t2.micro",
+    "ssh_username": "centos",
+    "ssh_pty" : "true",
+    "ami_name": "nginx",
+    "vpc_id" : "{{user `dev_vpc_id`}}",
+    "subnet_id" : "{{user `dev_subnet_id`}}"
+  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "packer/nginx/nginx.service",
+      "destination": "/tmp/nginx.service"
+    },
+    {
+      "type": "file",
+      "source": "packer/nginx/nginx-config.sh",
+      "destination": "/tmp/nginx-config.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command" : "sudo sh '{{ .Path }}'",
+      "script": "packer/nginx/nginx.sh"
+    }
+  ]
+}
